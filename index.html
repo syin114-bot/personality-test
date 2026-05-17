@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测一测 · 自我探索大本营</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cream: #faf7f2;
+            --warm-white: #fffdf9;
+            --ink: #1c1a16;
+            --ink-soft: #3d3a32;
+            --stone: #8a8578;
+            --stone-light: #b8b2a8;
+            --divider: #e4ddd3;
+            
+            --cat-mbti: #e8a87c;
+            --cat-nine: #7cb8d4;
+            --cat-career: #8cc49a;
+            --cat-academic: #bda2cc;
+            --cat-social: #e29797;
+            --cat-pop: #d4b27c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', Georgia, serif;
+            background-color: var(--cream);
+            color: var(--ink);
+            line-height: 1.6;
+            padding: 40px 20px;
+            scroll-behavior: smooth; /* 让滚动更加丝滑 */
+        }
+
+        header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        header h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            color: var(--stone);
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* 🎲 盲盒区域 */
+        .blind-box {
+            background: linear-gradient(135deg, #3d3a32, #6e6756);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            color: var(--cream);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px rgba(61, 58, 50, 0.1);
+        }
+
+        .blind-box h2 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .blind-box p {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-bottom: 16px;
+        }
+
+        .random-btn {
+            background-color: var(--cream);
+            color: var(--ink);
+            border: 1px solid var(--divider);
+            padding: 12px 28px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .random-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* 🗂️ 顶部卡片式分类导航键 */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .nav-card {
+            background-color: var(--warm-white);
+            border: 1px solid var(--divider);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--ink-soft);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--stone);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.03);
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* ➖ 决定命运的分界虚线 */
+        .magic-line {
+            border: none;
+            border-top: 3px dashed var(--stone-light);
+            margin: 10px 0 40px 0;
+            position: relative;
+        }
+        
+        .magic-line::after {
+            content: "✨ 测试格子在下方对齐 ✨";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--cream);
+            padding: 0 15px;
+            font-size: 0.75rem;
+            color: var(--stone);
+            letter-spacing: 1px;
+        }
+
+        /* 📁 分类区块样式 */
+        .category-section {
+            margin-bottom: 50px;
+            scroll-margin-top: 30px; /* 让卡片滚上来到虚线下方时留点呼吸空间 */
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--divider);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 🔲 卡片网格布局 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        /* 📄 测试主体卡片 */
+        .card {
+            background-color: var(--warm-white);
+            border: 1px solid var(--divider);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(61, 58, 50, 0.05);
+            border-color: var(--stone-light);
+        }
+
+        .card-top {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            flex-grow: 1;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            padding: 2px 9px;
+            border-radius: 20px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--ink-soft);
+            margin-bottom: 15px;
+        }
+
+        /* 💾 核心更新：本地结果保存区 */
+        .result-zone {
+            background-color: #fcfbfa;
+            border: 1px dashed var(--divider);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .result-display {
+            font-size: 0.82rem;
+            color: var(--stone);
+            word-break: break-all;
+        }
+
+        .result-display strong {
+            color: #c99a4e;
+            font-weight: 700;
+        }
+
+        .save-btn {
+            background-color: transparent;
+            border: 1px solid var(--stone-light);
+            color: var(--ink-soft);
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .save-btn:hover {
+            background-color: var(--ink);
+            color: var(--cream);
+            border-color: var(--ink);
+        }
+
+        .card-action {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--stone);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border-top: 1px solid var(--divider);
+            padding-top: 12px;
+            text-decoration: none;
+        }
+
+        .card:hover .card-action {
+            color: var(--ink);
+        }
+
+        /* 📝 底部免责声明 */
+        footer {
+            margin-top: 60px;
+            padding: 24px;
+            background-color: var(--warm-white);
+            border-radius: 12px;
+            border: 1px dashed var(--divider);
+        }
+
+        .disclaimer-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #c95b5b;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .disclaimer-text {
+            font-size: 0.8rem;
+            color: var(--stone);
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 20px 15px; }
+            header h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: 1fr; }
+            .nav-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>测一测 · 自我探索大本营</h1>
+        <p>点击上方卡片一键将分类移至虚线下方。支持本地测试结果自动保存哦！</p>
+    </header>
+
+    <div class="container">
+
+        <div class="blind-box">
+            <h2>🎲 纠结症犯了？帮我盲抽一个！</h2>
+            <p>全网宝藏测试随机开启，点一下，看看今天命中注定测哪一个！</p>
+            <button class="random-btn" onclick="randomTest()">🎯 抽取今日测试盲盒</button>
+        </div>
+
+        <div class="nav-grid">
+            <div class="nav-card" onclick="scrollToSection('mbti-layer')">
+                <div class="nav-dot" style="background-color: var(--cat-mbti);"></div>
+                <span>荣格八维/MBTI</span>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('nine-layer')">
+                <div class="nav-dot" style="background-color: var(--cat-nine);"></div>
+                <span>九型与大五</span>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('career-layer')">
+                <div class="nav-dot" style="background-color: var(--cat-career);"></div>
+                <span>职业锚与天赋</span>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('academic-layer')">
+                <div class="nav-dot" style="background-color: var(--cat-academic);"></div>
+                <span>学院自成长表</span>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('social-layer')">
+                <div class="nav-dot" style="background-color: var(--cat-social);"></div>
+                <span>情感社交防郁</span>
+            </div>
+            <div class="nav-card" onclick="scrollToSection('pop-layer')">
+                <div class="nav-dot" style="background-color: var(--cat-pop);"></div>
+                <span>社交爆款网红</span>
+            </div>
+        </div>
+
+        <hr class="magic-line" id="anchor-line">
+
+
+        <section class="category-section" id="mbti-layer">
+            <h2 class="category-title">🧩 MBTI 与荣格维度的探索</h2>
+            <div class="grid">
+                <div class="card">
+                    <a href="https://www.16personalities.com/ch" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">MBTI 官网</span>
+                        <div class="card-title">16Personalities 测验</div>
+                        <div class="card-desc">全球最火爆的16型人格测试，精美视觉化报告，快速解锁你的性格四字字母。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-1">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-1', '16Personalities')">记录</button>
+                    </div>
+                    <a href="https://www.16personalities.com/ch" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.16type.com/main.html" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">免费推荐</span>
+                        <div class="card-title">荣格斯六十四型 (16type)</div>
+                        <div class="card-desc">基于荣格理论深度拓展的免费性格测验，适合探寻深层自我。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-2">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-2', '荣格斯六十四型')">记录</button>
+                    </div>
+                    <a href="https://www.16type.com/main.html" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://welefen.com/lab/mbti/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">才储快捷</span>
+                        <div class="card-title">才储 MBTI 快捷版</div>
+                        <div class="card-desc">国内非常经典的测试渠道，快速得出你的性格倾向模型。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-3">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-3', '才储快捷版')">记录</button>
+                    </div>
+                    <a href="https://welefen.com/lab/mbti/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://mbti.ai/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">硬核英文</span>
+                        <div class="card-title">荣格八维 99题（英文）</div>
+                        <div class="card-desc">国外极具好评的荣格认知功能测试，深挖你的主导与辅助功能。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-4">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-4', '荣格八维99题')">记录</button>
+                    </div>
+                    <a href="https://mbti.ai/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.jungus.cn/zh-hans/test/Standard" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">荣格斯</span>
+                        <div class="card-title">荣格斯性格测试（标准版）</div>
+                        <div class="card-desc">标准化的荣格人格评估，解析你的内倾/外倾与感官理智维度。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-5">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-5', '荣格斯标准版')">记录</button>
+                    </div>
+                    <a href="https://www.jungus.cn/zh-hans/test/Standard" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.jungus.cn/zh-hans/test/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">深度进阶</span>
+                        <div class="card-title">荣格斯性格测试（专业版）</div>
+                        <div class="card-desc">面向高阶玩家的深度荣格心理学测验，全方位出具多维度报告。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-6">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-6', '荣格斯专业版')">记录</button>
+                    </div>
+                    <a href="https://www.jungus.cn/zh-hans/test/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://www.apesk.com/mbti2/rongge/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">APESK</span>
+                        <div class="card-title">APESK 荣格八维测验 (40题)</div>
+                        <div class="card-desc">精心简化的40题版本，帮你理清Fe、Fi、Ne、Ni等八维功能排序。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-7">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-7', 'APESK八维')">记录</button>
+                    </div>
+                    <a href="http://www.apesk.com/mbti2/rongge/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://mistypeinvestigator.com/test/v1" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">Patreon硬核</span>
+                        <div class="card-title">Mistype Investigator 80题</div>
+                        <div class="card-desc">极度精准地排查“错测”可能，海外党极力推荐的硬核八维测试（英文）。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-8">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-8', 'Mistype80题')">记录</button>
+                    </div>
+                    <a href="https://mistypeinvestigator.com/test/v1" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://www.apesk.com/jungtest/index.html" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">才储高阶</span>
+                        <div class="card-title">才储荣格认知功能测试</div>
+                        <div class="card-desc">深入潜意识层面，看看你在日常决策和认知中扮演着什么角色。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-9">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-9', '才储荣格功能')">记录</button>
+                    </div>
+                    <a href="http://www.apesk.com/jungtest/index.html" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://www.totypes.com" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-mbti);">totypes</span>
+                        <div class="card-title">ToTypes 极简测试</div>
+                        <div class="card-desc">一个简约干净的性格小站，提供直观的特质模型参考。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-mbti-10">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('mbti-10', 'ToTypes')">记录</button>
+                    </div>
+                    <a href="http://www.totypes.com" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" id="nine-layer">
+            <h2 class="category-title">🎯 第二层：九型人格与大五特质评估</h2>
+            <div class="grid">
+                <div class="card">
+                    <a href="https://www.eclecticenergies.com/enneagram/test-2" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">经典英文</span>
+                        <div class="card-title">Eclectic Energies 九型 52题</div>
+                        <div class="card-desc">国外非常著名的经典九型量表，含副型倾向排查（英文）。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-1">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-1', 'Eclectic九型')">记录</button>
+                    </div>
+                    <a href="https://www.eclecticenergies.com/enneagram/test-2" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://enneagram.cc/jxcs.php" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">中国九型</span>
+                        <div class="card-title">中国九型人格学院测验 (99题)</div>
+                        <div class="card-desc">专为国人打造的99题量表，快速识别你是成就型、理智型还是完美型。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-2">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-2', '学院九型99题')">记录</button>
+                    </div>
+                    <a href="http://enneagram.cc/jxcs.php" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://www.cnenn.cn/html/juxingrengeceshi/test.asp" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">华文九型</span>
+                        <div class="card-title">华文九型人格大测验 (144题)</div>
+                        <div class="card-desc">144题高容量进阶版本，全面细致地拆解你的核心恐惧与渴望。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-3">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-3', '华文九型144题')">记录</button>
+                    </div>
+                    <a href="http://www.cnenn.cn/html/juxingrengeceshi/test.asp" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://enneagram-personality.com/en" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">海外流行</span>
+                        <div class="card-title">Enneagram 72题（多语版）</div>
+                        <div class="card-desc">精简科学的72题海外版本，直观呈现你的性格雷达图谱。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-4">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-4', 'Enneagram72题')">记录</button>
+                    </div>
+                    <a href="https://enneagram-personality.com/en" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://types.yuzeli.com/survey/nine180" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">超硬核</span>
+                        <div class="card-title">九型人格极限大测验 (180题)</div>
+                        <div class="card-desc">题量最大的超级完全体，彻底剖析核心人格及侧翼(Wing)影响。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-5">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-5', '九型极限180题')">记录</button>
+                    </div>
+                    <a href="https://types.yuzeli.com/survey/nine180" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.arealme.com/enneagram-test/cn/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">Arealme</span>
+                        <div class="card-title">Arealme 趣味九型测验</div>
+                        <div class="card-desc">界面生动有趣的中文版九型测试，适合新手快速上手。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-6">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-6', 'Arealme九型')">记录</button>
+                    </div>
+                    <a href="https://www.arealme.com/enneagram-test/cn/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://sakinorva.net/test/enneagram" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">Sakinorva</span>
+                        <div class="card-title">九型 Tritype 综合测试</div>
+                        <div class="card-desc">著名的 Sakinorva 平台出品，探索你三元人格组合的深度量表。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-7">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-7', 'Sakinorva九型')">记录</button>
+                    </div>
+                    <a href="https://sakinorva.net/test/enneagram" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.advanced-personality.com/s/test/enneagram-test.php" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">高级测评</span>
+                        <div class="card-title">高级心理学九型人格进阶测试</div>
+                        <div class="card-desc">基于心理学前沿成果修正的九型进阶版本，分析特质流动。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-8">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-8', '高级心理学九型')">记录</button>
+                    </div>
+                    <a href="https://www.advanced-personality.com/s/test/enneagram-test.php" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://www.apesk.com/bigfive/index.asp?mq=&re=yes" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">学术殿堂</span>
+                        <div class="card-title">大五人格特质测验 (非迫选版)</div>
+                        <div class="card-desc">学术界最认可的 OCEAN 人格模型，从开放性、尽责性等五大核心评估。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-9">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-9', '大五非迫选版')">记录</button>
+                    </div>
+                    <a href="http://www.apesk.com/bigfive/index.asp?mq=&re=yes" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.apesk.com/BigFive/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">大五初级</span>
+                        <div class="card-title">大五人格测试（初级版）</div>
+                        <div class="card-desc">快速轻量的大五特质扫描，带你初步建立宏观人格画像。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-10">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-10', '大五初级版')">记录</button>
+                    </div>
+                    <a href="https://www.apesk.com/BigFive/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.apesk.com/bigfive_step2/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">大五趣味</span>
+                        <div class="card-title">大五人格测试（趣味拓展版）</div>
+                        <div class="card-desc">结合日常场景的大五测评，告别枯燥选项，结果更具落地性。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-11">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-11', '大五趣味版')">记录</button>
+                    </div>
+                    <a href="https://www.apesk.com/bigfive_step2/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.apesk.com/bigfive240/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-nine);">专业极限</span>
+                        <div class="card-title">大五人格精准测验 (240题)</div>
+                        <div class="card-desc">心理学研究级别的超长完全版，无死角拆解你的基础人格特质。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-nine-12">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('nine-12', '大五240题')">记录</button>
+                    </div>
+                    <a href="https://www.apesk.com/bigfive240/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" id="career-layer">
+            <h2 class="category-title">💼 第三层：职业锚、天赋优势与领导力</h2>
+            <div class="grid">
+                <div class="card">
+                    <a href="https://minke8.cn/gd7.html" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-career);">选科/专业</span>
+                        <div class="card-title">霍兰德职业兴趣测试</div>
+                        <div class="card-desc">将人格分为研究、艺术、社会等六大维度，完美解答你未来适合学什么、做什么。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-career-1">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('career-1', '霍兰德测试')">记录</button>
+                    </div>
+                    <a href="https://minke8.cn/gd7.html" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://m.psyctest.cn/q/OLxN6Qxn/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-career);">核心价值</span>
+                        <div class="card-title">经典职业锚测试 (Career Anchors)</div>
+                        <div class="card-desc">找出你工作或学习时绝不妥协的底层驱动力（自主型、安全型、技术型等）。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-career-2">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('career-2', '职业锚测试')">记录</button>
+                    </div>
+                    <a href="https://m.psyctest.cn/q/OLxN6Qxn/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://strengths-finder.lance.moe/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-career);">核心天赋</span>
+                        <div class="card-title">盖洛普优势识别器 (免费版)</div>
+                        <div class="card-desc">帮你找出个人最突出的34个天赋优势，学会“把精力花在长处上”。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-career-3">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('career-3', '盖洛普优势')">记录</button>
+                    </div>
+                    <a href="https://strengths-finder.lance.moe/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.disconline.com/free-disc-test.php" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-career);">行为风格</span>
+                        <div class="card-title">DISC 行为风格测验</div>
+                        <div class="card-desc">经典职场沟通模型，判断你是掌控型(D)、影响型(I)、稳健型(S)还是谨慎型(C)。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-career-4">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('career-4', 'DISC测试')">记录</button>
+                    </div>
+                    <a href="https://www.disconline.com/free-disc-test.php" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.apesk.com/P/Main.asp?mq=&re=" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-career);">企业应用</span>
+                        <div class="card-title">APESK 企业级 MBTI 特质测评</div>
+                        <div class="card-desc">结合行业分工、领导力和团队协作维度的企业应用级性格评测。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-career-5">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('career-5', '企业级MBTI')">记录</button>
+                    </div>
+                    <a href="https://www.apesk.com/P/Main.asp?mq=&re=" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://intobeta.com/4d-personality-assessment/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-career);">领导风格</span>
+                        <div class="card-title">4D 团队领导力特质测试</div>
+                        <div class="card-desc">将决策模式分为绿色培养、黄色包融、蓝色展望与橙色指导，看清你的潜在领导风格。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-career-6">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('career-6', '4D领导力')">记录</button>
+                    </div>
+                    <a href="https://intobeta.com/4d-personality-assessment/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" id="academic-layer">
+            <h2 class="category-title">📋 第四层：学院级自我成长心理量表</h2>
+            <div class="grid">
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/rjubwMA.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">自我信念</span>
+                        <div class="card-title">一般自我效能感表 (GSES)</div>
+                        <div class="card-desc">高校教材标准量表，测定你面对困难与挑战时，对自身能力的信心程度。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-1">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-1', '自我效能感')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/rjubwMA.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/wjoPTEA.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">心理负担</span>
+                        <div class="card-title">消极完美主义量表</div>
+                        <div class="card-desc">检查自己是否因为过度追求“无瑕疵”而陷入拖延与自我怀疑的死循环。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-2">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-2', '消极完美主义')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/wjoPTEA.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/tUJPNRC.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">高校量表</span>
+                        <div class="card-title">大学备课级 大五人格测评</div>
+                        <div class="card-desc">精选自专业备课教材附带的问卷星学术量表，数据模型非常严谨。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-3">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-3', '备课大五量表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/tUJPNRC.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/exkPXLc.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">情绪监控</span>
+                        <div class="card-title">积极与消极情绪量表 (PANAS)</div>
+                        <div class="card-desc">快速给最近一段时间的心境打分，直观展现内心正负能量占比。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-4">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-4', 'PANAS情绪表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/exkPXLc.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/tUQWCm1.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">高情商</span>
+                        <div class="card-title">情绪智商 (EQ) 测量表</div>
+                        <div class="card-desc">测量你感知他人情绪、控制自身波动、驾驭人际交往的综合情商水平。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-5">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-5', 'EQ情商表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/tUQWCm1.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/wWcRzPr.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">幸福感知</span>
+                        <div class="card-title">心理幸福感深度测试</div>
+                        <div class="card-desc">从自我接纳、生活目的等多个正向指标出发，评估当前的内在幸福指数。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-6">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-6', '幸福感测试')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/wWcRzPr.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/rFoOWBw.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">情绪力</span>
+                        <div class="card-title">情绪调节策略量表</div>
+                        <div class="card-desc">分析你在面对强烈情感时，习惯采用“认知重评”还是“表达抑制”。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-7">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-7', '情绪调节策略')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/rFoOWBw.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/tUCm1me.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">抗压韧性</span>
+                        <div class="card-title">心理弹性量表 (Resilience)</div>
+                        <div class="card-desc">也就是常说的逆商(AQ)。测试你在经历挫折跌入低谷后，自我调节反弹的能力。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-8">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-8', '心理弹性表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/tUCm1me.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/Q7h0w9n.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-academic);">深度思考</span>
+                        <div class="card-title">生命意义感量表（修订版）</div>
+                        <div class="card-desc">探索你对当下生活价值的探寻度与体验度，建立稳固的内心锚点。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-academic-9">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('academic-9', '生命意义感')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/Q7h0w9n.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" id="social-layer">
+            <h2 class="category-title">❤️ 第五层：情感、社交与深度心理探索</h2>
+            <div class="grid">
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/tUyT3IR.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">亲密关系</span>
+                        <div class="card-title">依恋类型深度测试</div>
+                        <div class="card-desc">探寻你在亲密关系中属于安全型、焦虑型、回避型还是恐惧型。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-1">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-1', '依恋类型')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/tUyT3IR.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://5lovelanguages.com/quizzes/love-language" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">爱之语</span>
+                        <div class="card-title">爱的五种语言官方测验</div>
+                        <div class="card-desc">精细排查你的“爱之语”偏好：赞美言辞、礼物还是行动（英文）。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-2">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-2', '爱的五种语言')">记录</button>
+                    </div>
+                    <a href="https://5lovelanguages.com/quizzes/love-language" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.advanced-personality.com/s/tests" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">多元测验</span>
+                        <div class="card-title">高级认知与情性综合大测验</div>
+                        <div class="card-desc">包含认知、气质、情性等模块的学术全家桶综合平台。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-3">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-3', '认知情性大测验')">记录</button>
+                    </div>
+                    <a href="https://www.advanced-personality.com/s/tests" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.advanced-personality.com/s/test/psychosophy-test" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">心智模型</span>
+                        <div class="card-title">心智 (py) 测评</div>
+                        <div class="card-desc">分析你灵魂底层的精神结构、意志逻辑以及核心倾向。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-4">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-4', '心智py测评')">记录</button>
+                    </div>
+                    <a href="https://www.advanced-personality.com/s/test/psychosophy-test" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.advanced-personality.com/s/test/new-temperament-test" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">气质流派</span>
+                        <div class="card-title">PY 气质类型测试</div>
+                        <div class="card-desc">从多巴胺与血清素等生理生化视角出发的全新现代气质倾向评测。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-5">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-5', 'PY气质测试')">记录</button>
+                    </div>
+                    <a href="https://www.advanced-personality.com/s/test/new-temperament-test" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.advanced-personality.com/s/test/toxic-test" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">防雷避坑</span>
+                        <div class="card-title">有毒特征排查 (8种不良特征)</div>
+                        <div class="card-desc">审视和查验自己或身边人潜在的控制欲、疑心等负面心理缺陷。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-6">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-6', '有毒特征排查')">记录</button>
+                    </div>
+                    <a href="https://www.advanced-personality.com/s/test/toxic-test" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/mxEe3EN.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">心理体检</span>
+                        <div class="card-title">压力感知量表 (CPSS)</div>
+                        <div class="card-desc">教材标配，快速测试近一个月你的精神处于第几级紧绷状态。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-7">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-7', 'CPSS压力表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/mxEe3EN.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/r1wME7B.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">日常防郁</span>
+                        <div class="card-title">焦虑自评量表 (SAS)</div>
+                        <div class="card-desc">用于监测日常高强度学习或工作后，内心是否有过度紧绷与慌张。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-8">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-8', 'SAS焦虑表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/r1wME7B.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/YJnAthN.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">日常防郁</span>
+                        <div class="card-title">抑郁自评量表 (SDS)</div>
+                        <div class="card-desc">权威自评基准，用于排查最近是否持续处于情绪低迷状态。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-9">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-9', 'SDS抑郁表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/YJnAthN.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wjx.cn/vm/Ycthm5X.aspx" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-social);">睡眠监控</span>
+                        <div class="card-title">失眠严重程度问卷 (ISI)</div>
+                        <div class="card-desc">经常熬夜、睡不着？快用这个官方量表来筛查一下你的睡眠质量。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-social-10">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('social-10', 'ISI睡眠表')">记录</button>
+                    </div>
+                    <a href="https://www.wjx.cn/vm/Ycthm5X.aspx" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section" id="pop-layer">
+            <h2 class="category-title">✨ 第六层：社交爆款！网红与趣味文化测验</h2>
+            <div class="grid">
+                <div class="card">
+                    <a href="https://herti.pages.dev" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">顶流爆款</span>
+                        <div class="card-title">女性主义人格测试</div>
+                        <div class="card-desc">全网刷屏的个性特质分析测验，金句频出，超适合发动态分享。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-1">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-1', '女性主义人格')">记录</button>
+                    </div>
+                    <a href="https://herti.pages.dev" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://sbtinb.com" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">宝藏神站</span>
+                        <div class="card-title">甄嬛传人格测试（及趣味合集）</div>
+                        <div class="card-desc">看你是步步为营的甄嬛还是敢爱敢恨的华妃？内含超多神仙好玩测试。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-2">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-2', '甄嬛传人格')">记录</button>
+                    </div>
+                    <a href="http://sbtinb.com" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://rbti.com.cn" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">古典红学</span>
+                        <div class="card-title">红楼梦人格测验 (RBTI)</div>
+                        <div class="card-desc">将古典红楼梦人物与现代性格特质精妙连接，测测你是大观园里的谁。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-3">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-3', '红楼梦人格')">记录</button>
+                    </div>
+                    <a href="http://rbti.com.cn" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://who-ology.buzz" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">思想碰撞</span>
+                        <div class="card-title">哲学人格测试</div>
+                        <div class="card-desc">用思辨构筑你的精神内核，分析你的底层思维更贴近哪位伟大的哲学家。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-4">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-4', '哲学人格')">记录</button>
+                    </div>
+                    <a href="http://who-ology.buzz" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://sunyanzi.xnewstart.com" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">乐评情怀</span>
+                        <div class="card-title">孙燕姿专辑特征人格测验</div>
+                        <div class="card-desc">用旋律和歌词串联你的性格特质，音乐与心理学的极致浪漫触碰。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-5">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-5', '孙燕姿专辑人格')">记录</button>
+                    </div>
+                    <a href="http://sunyanzi.xnewstart.com" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://xwxq55hqiyjx.meoo.info/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">历史演进</span>
+                        <div class="card-title">历史学人格深度测试</div>
+                        <div class="card-desc">在历史的长河里映射真实的自己，挖掘你的性格带有哪些波澜壮阔的历史印记。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-6">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-6', '历史学人格')">记录</button>
+                    </div>
+                    <a href="https://xwxq55hqiyjx.meoo.info/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://bjti.flagrain.cn" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">紫禁城</span>
+                        <div class="card-title">紫禁城清宫人物人格测验</div>
+                        <div class="card-desc">穿越回古代宫廷，看看你的日常行事作风和心机更贴合哪位古人。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-7">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-7', '清宫人物人格')">记录</button>
+                    </div>
+                    <a href="https://bjti.flagrain.cn" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://sdti.pages.dev" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">SDTI 潮流</span>
+                        <div class="card-title">SDTI 个性特质模型</div>
+                        <div class="card-desc">极简冷淡风的网红特质测验，为你出具一份高级感十足的分析报告。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-8">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-8', 'SDTI特质')">记录</button>
+                    </div>
+                    <a href="https://sdti.pages.dev" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.smtitest.top" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">SMTI 情感</span>
+                        <div class="card-title">SMTI 感情人格深度测试</div>
+                        <div class="card-desc">专门针对情感态度、恋爱脑指数和亲密相处习惯量身定制的趣味测评。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-9">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-9', 'SMTI情感')">记录</button>
+                    </div>
+                    <a href="https://www.smtitest.top" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="https://www.wizard-tool.com/" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">魔法学院</span>
+                        <div class="card-title">哈利波特分院帽测试</div>
+                        <div class="card-desc">格兰芬多、斯莱特林、拉文克劳还是赫奇帕奇？测测最适合你的霍格沃茨学院。</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-10">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-10', '分院帽测试')">记录</button>
+                    </div>
+                    <a href="https://www.wizard-tool.com/" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+
+                <div class="card">
+                    <a href="http://unnamed42.github.io/2016-06-30-%E5%AE%90%E6%96%B9%E7%89%88%20DnD%20%E9%98%B5%E8%90%A5%E6%B5%8B%E8%AF%95.html" target="_blank" class="card-top">
+                        <span class="card-tag" style="background-color: var(--cat-pop);">跑团文化</span>
+                        <div class="card-title">官方版 DnD 九大阵营测试</div>
+                        <div class="card-desc">测出你的道德与秩序观。你是绝对中立、守序善良，还是混乱邪恶？</div>
+                    </a>
+                    <div class="result-zone">
+                        <div class="result-display" id="res-pop-11">我的结果: <span>未记录</span></div>
+                        <button class="save-btn" onclick="saveResult('pop-11', 'DnD阵营测试')">记录</button>
+                    </div>
+                    <a href="http://unnamed42.github.io/2016-06-30-%E5%AE%90%E6%96%B9%E7%89%88%20DnD%20%E9%98%B5%E8%90%A5%E6%B5%8B%E8%AF%95.html" target="_blank" class="card-action">立即探索 →</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="disclaimer-title">💡 温馨提示与娱乐免责声明</div>
+        <div class="disclaimer-text">
+            本网页提供的所有链接及测试内容，均收集自网络公开娱乐及科普资料。本页面仅提供跳转导航服务。您记录的测试结果均<strong>全自动保存在您当前设备的本地浏览器缓存中（100%纯匿名保护）</strong>，本站无后台服务器，绝不收集、不存储任何用户的隐私数据。
+            请注意，上述所有测试结果仅供日常放松、娱乐或自我了解时的参考，<strong>不能代替专业的心理学、医学诊断或职业咨询服务</strong>。如果遇到持续的心理压力或困扰，请向专业的医疗或心理咨询机构寻求帮助哦！
+        </div>
+    </footer>
+
+    <script>
+        // 🔮 【新逻辑】丝滑跳转并精准对齐到虚线正下方
+        function scrollToSection(sectionId) {
+            const targetSection = document.getElementById(sectionId);
+            const anchorLine = document.getElementById('anchor-line');
+            
+            if (targetSection && anchorLine) {
+                // 1. 获取虚线在网页中的绝对垂直高度
+                const lineY = anchorLine.getBoundingClientRect().top + window.pageYOffset;
+                
+                // 2. 将选中的那一区移动到最前面（视觉提升）
+                targetSection.parentNode.insertBefore(targetSection, anchorLine.nextSibling);
+                
+                // 3. 让页面丝滑滚动，精确停留在虚线下方
+                window.scrollTo({
+                    top: lineY - 10, 
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // 💾 【新逻辑】本地保存与读取测试结果
+        function saveResult(id, name) {
+            const currentResult = localStorage.getItem('pt-res-' + id) || '';
+            const userInput = prompt('请输入你在【' + name + '】中测出的结果：\n(例如: INFP、9型4号、守序善良)', currentResult);
+            
+            if (userInput !== null) {
+                const trimmed = userInput.trim();
+                if (trimmed === '') {
+                    localStorage.removeItem('pt-res-' + id);
+                    document.getElementById('res-' + id).innerHTML = '我的结果: <span>未记录</span>';
+                } else {
+                    localStorage.setItem('pt-res-' + id, trimmed);
+                    document.getElementById('res-' + id).innerHTML = '我的结果: <strong>' + trimmed + '</strong>';
+                }
+            }
+        }
+
+        // 🔄 页面一加载，自动去小抽屉把以前保存过的结果全部拿出来摆好
+        function loadAllResults() {
+            const displays = document.querySelectorAll('.result-display');
+            displays.forEach(div => {
+                const id = div.id.replace('res-', '');
+                const savedValue = localStorage.getItem('pt-res-' + id);
+                if (savedValue) {
+                    div.innerHTML = '我的结果: <strong>' + savedValue + '</strong>';
+                }
+            });
+        }
+
+        // 🎲 盲盒抽取逻辑
+        function randomTest() {
+            const cards = document.querySelectorAll('.card-top');
+            if (cards.length > 0) {
+                const randomIndex = Math.floor(Math.random() * cards.length);
+                const randomLink = cards[randomIndex].getAttribute('href');
+                const randomName = cards[randomIndex].querySelector('.card-title').innerText;
+                
+                alert('🎲 盲盒为你抽中了：【' + randomName + '】\n点击确定后将为你安全跳转测试网页！');
+                window.open(randomLink, '_blank');
+            }
+        }
+
+        // 初始化读取
+        window.onload = loadAllResults;
+    </script>
+
+</body>
+</html>
