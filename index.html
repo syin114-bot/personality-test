@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>测一测 · 人格测试合集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=ZCOOL+QingKe+HuangYou&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream:      #faf7f2;
+  --warm-white: #fffdf9;
+  --ink:        #1c1a16;
+  --ink-soft:   #3d3a32;
+  --stone:      #8a8578;
+  --stone-light:#b8b2a8;
+  --divider:    #e4ddd3;
+  --cat-mbti:   #e8a87c;
+  --cat-nine:   #7cb8d4;
+  --cat-big5:   #8cc49a;
+  --cat-rel:    #d4879c;
+  --cat-fun:    #a78bdc;
+  --shadow-sm:  0 2px 10px rgba(28,26,22,0.07);
+  --shadow-lg:  0 16px 48px rgba(28,26,22,0.13);
+  --radius:     14px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Serif SC', serif;
+  background: var(--cream); color: var(--ink); min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 0% 0%, rgba(232,168,124,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(124,184,212,0.07) 0%, transparent 55%);
+}
+
+/* HERO */
+.hero { text-align: center; padding: 72px 24px 32px; position: relative; overflow: hidden; }
+.hero::before {
+  content: ''; position: absolute;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,168,124,0.12), transparent 70%);
+  top: -200px; left: 50%; transform: translateX(-50%); pointer-events: none;
+}
+.hero-tag {
+  display: inline-block; background: var(--ink); color: var(--cream);
+  font-size: 11px; letter-spacing: 4px; padding: 6px 18px;
+  border-radius: 30px; margin-bottom: 28px; font-weight: 400;
+}
+.hero-title {
+  font-family: 'ZCOOL QingKe HuangYou', cursive;
+  font-size: clamp(42px, 10vw, 72px); color: var(--ink);
+  line-height: 1; letter-spacing: 2px; margin-bottom: 20px;
+}
+.hero-title span { position: relative; display: inline-block; }
+.hero-title span::after {
+  content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 8px;
+  background: linear-gradient(90deg, var(--cat-mbti), var(--cat-rel));
+  border-radius: 4px; opacity: 0.35; z-index: -1;
+}
+.hero-sub {
+  font-size: 14px; color: var(--stone); font-weight: 300; letter-spacing: 1px;
+  max-width: 440px; margin: 0 auto 24px; line-height: 1.8;
+}
+
+/* 🎯 新增的盲抽按钮专属漂亮的 CSS 样式 */
+.random-btn {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--cat-mbti), var(--cat-fun));
+  color: white; border: none;
+  padding: 12px 28px; font-family: 'Noto Serif SC', serif;
+  font-size: 14px; font-weight: 500; border-radius: 30px;
+  cursor: pointer; box-shadow: 0 4px 15px rgba(232,168,124,0.25);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-bottom: 10px; letter-spacing: 1px;
+}
+.random-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 25px rgba(167,139,220,0.4);
+}
+.random-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  padding: 16px 20px; margin-bottom: 30px; position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(to bottom, var(--cream) 85%, transparent);
+}
+.filter-btn {
+  padding: 8px 18px; border-radius: 30px; border: 1.5px solid var(--divider);
+  background: var(--warm-white); font-family: 'Noto Serif SC', serif;
+  font-size: 13px; color: var(--stone); cursor: pointer;
+  transition: all 0.2s ease; white-space: nowrap; box-shadow: var(--shadow-sm);
+}
+.filter-btn:hover { border-color: var(--ink); color: var(--ink); transform: translateY(-1px); }
+.filter-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+/* MAIN CONTENT */
+.main { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+.category-section { margin-bottom: 40px; transition: all 0.3s ease; }
+
+.category-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.cat-title {
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--ink-soft);
+}
+.cat-line { flex: 1; height: 1px; background: var(--divider); }
+
+/* CARDS GRID */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.test-card {
+  background: var(--warm-white); border: 1px solid var(--divider);
+  border-radius: var(--radius); padding: 24px 22px;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; gap: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative; overflow: hidden;
+}
+.test-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+  background: var(--cat-color, var(--stone)); transition: width 0.2s ease;
+}
+.test-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ink-soft);
+}
+.test-card:hover::before { width: 8px; }
+
+.card-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-top: 4px; }
+.card-desc { font-size: 13px; color: var(--stone); line-height: 1.6; font-weight: 300; }
+.card-tag {
+  align-self: flex-start; font-size: 11px; padding: 3px 10px; 
+  border-radius: 20px; background: #f0ebe1; color: var(--stone); font-weight: 500;
+}
+
+/* PROFILE ARCHIVE SECTION */
+.archive-box {
+  background: var(--warm-white); border: 2px dashed var(--divider);
+  border-radius: var(--radius); padding: 30px 24px; margin-top: 60px;
+  box-shadow: var(--shadow-sm); text-align: center;
+}
+.archive-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 20px; }
+.archive-input {
+  background: var(--cream); border: 1px solid var(--divider); border-radius: 8px;
+  padding: 10px; font-family: inherit; font-size: 13px; text-align: center; color: var(--ink);
+}
+.archive-input:focus { border-color: var(--ink); outline: none; }
+
+.footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--stone-light); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-tag">PERSONALITY HUB</div>
+    <h1 class="hero-title">测一测 <span>人格合集</span></h1>
+    <p class="hero-sub">精选全网最准的心理与人格测试，在这里，一键开启了解自己的神秘旅程。✨</p>
+    
+    <button id="random-btn" class="random-btn">🎲 纠结症犯了？帮我盲抽一个！</button>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-target="all">全部测试</button>
+    <button class="filter-btn" data-target="mbti">MBTI 荣格</button>
+    <button class="filter-btn" data-target="nine">九型/认知</button>
+    <button class="filter-btn" data-target="big5">大五/特质</button>
+    <button class="filter-btn" data-target="rel">情感社交</button>
+  </div>
+
+  <div class="main">
+
+    <div class="category-section" data-cat="mbti">
+      <div class="category-header">
+        <div class="cat-dot" style="background: var(--cat-mbti);"></div>
+        <div class="cat-title">MBTI & 荣格八维</div>
+        <div class="cat-line"></div>
+      </div>
+      <div class="cards-grid">
+        <a href="https://www.16personalities.com/ch" target="_blank" class="test-card" style="--cat-color: var(--cat-mbti);">
+          <div class="card-title">16型人格测试 (16p)</div>
+          <div class="card-desc">官方最经典的免费测试，测出你的四字人格代号与性格解析。</div>
+          <div class="card-tag">最常见 · 10分钟</div>
+        </a>
+        <a href="https://www.16type.com/" target="_blank" class="test-card" style="--cat-color: var(--cat-mbti);">
+          <div class="card-title">荣格六十四型测试</div>
+          <div class="card-desc">更深层次的性格映射，探索你的潜在认知功能分布。</div>
+          <div class="card-tag">进阶 · 荣格六十四型</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="category-section" data-cat="nine">
+      <div class="category-header">
+        <div class="cat-dot" style="background: var(--cat-nine);"></div>
+        <div class="cat-title">九型人格 & 认知能力</div>
+        <div class="cat-line"></div>
+      </div>
+      <div class="cards-grid">
+        <a href="https://www.advanced-personality.com/s/test/enneagram-test" target="_blank" class="test-card" style="--cat-color: var(--cat-nine);">
+          <div class="card-title">原始九型人格测试</div>
+          <div class="card-desc">探索你最核心的恐惧与欲望，找到你的底层人格驱动力。</div>
+          <div class="card-tag">经典九型</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="category-section" data-cat="big5">
+      <div class="category-header">
+        <div class="cat-dot" style="background: var(--cat-big5);"></div>
+        <div class="cat-title">大五人格 & 特质研究</div>
+        <div class="cat-line"></div>
+      </div>
+      <div class="cards-grid">
+        <a href="https://similarminds.com/bigfive.html" target="_blank" class="test-card" style="--cat-color: var(--cat-big5);">
+          <div class="card-title">大五人格学术测验</div>
+          <div class="card-desc">心理学界公认最科学的人格模型，从五个核心维度解构你。</div>
+          <div class="card-tag">学术严谨</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="category-section" data-cat="rel">
+      <div class="category-header">
+        <div class="cat-dot" style="background: var(--cat-rel);"></div>
+        <div class="cat-title">情感社交 & 亲密关系</div>
+        <div class="cat-line"></div>
+      </div>
+      <div class="cards-grid">
+        <a href="https://www.advanced-personality.com/s/test/love-test" target="_blank" class="test-card" style="--cat-color: var(--cat-rel);">
+          <div class="card-title">爱的语言测试</div>
+          <div class="card-desc">了解你在爱情中最渴望获得和付出的表达方式。</div>
+          <div class="card-tag">伴侣必备</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="archive-box">
+      <div class="archive-title">🔒 我的专属测试档案柜</div>
+      <p class="card-desc">做完测试后，把你的结果顺手记在这里吧！数据保存在本地，下次点开它还在哦～</p>
+      <div class="archive-grid">
+        <input type="text" id="archive-mbti" class="archive-input" placeholder="我的 MBTI (如 INFJ)">
+        <input type="text" id="archive-nine" class="archive-input" placeholder="我的九型 (如 4w5)">
+        <input type="text" id="archive-big5" class="archive-input" placeholder="大五人格核心">
+        <input type="text" id="archive-love" class="archive-input" placeholder="我的爱之语">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © 2026 测一测 Hub · 纯静态不收集隐私 · 请按 Ctrl+D 收藏本页 🤍
+  </div>
+
+  <script>
+    // 1. 分类筛选功能
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const sections = document.querySelectorAll('.category-section');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.filter-btn.active').classList.remove('active');
+        btn.classList.add('active');
+
+        const target = btn.getAttribute('data-target');
+        sections.forEach(section => {
+          if (target === 'all' || section.getAttribute('data-cat') === target) {
+            section.style.display = 'block';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // 2. 自动保存本地档案功能 (LocalStorage)
+    const inputs = ['mbti', 'nine', 'big5', 'love'];
+    inputs.forEach(id => {
+      const inputEl = document.getElementById(`archive-${id}`);
+      inputEl.value = localStorage.getItem(`my-${id}`) || '';
+      inputEl.addEventListener('input', () => {
+        localStorage.setItem(`my-${id}`, inputEl.value);
+      });
+    });
+
+    // 3. 🎲 核心魔法：随机盲抽跳转 JavaScript 代码
+    const randomBtn = document.getElementById('random-btn');
+    randomBtn.addEventListener('click', () => {
+      // 获取页面中所有的测试卡片
+      const allCards = document.querySelectorAll('.test-card');
+      if (allCards.length > 0) {
+        // 随机产生一个索引数字
+        const randomIndex = Math.floor(Math.random() * allCards.length);
+        // 选出那张随机的卡片
+        const randomCard = allCards[randomIndex];
+        // 抓取它里面的跳转链接
+        const testUrl = randomCard.getAttribute('href');
+        
+        // 炫酷地在新窗口打开这个盲抽结果！
+        window.open(testUrl, '_blank');
+      }
+    });
+  </script>
+</body>
+</html>
